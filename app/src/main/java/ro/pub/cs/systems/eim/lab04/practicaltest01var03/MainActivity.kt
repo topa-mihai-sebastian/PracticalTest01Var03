@@ -1,6 +1,7 @@
 package ro.pub.cs.systems.eim.lab04.practicaltest01var03
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -10,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.savedstate.serialization.saved
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +22,20 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.plus_button).setOnClickListener(buttonListener)
         findViewById<Button>(R.id.minus_button).setOnClickListener(buttonListener)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("first", findViewById<EditText>(R.id.first_number).text.toString())
+        outState.putString("second", findViewById<EditText>(R.id.second_number).text.toString())
+        outState.putString("result", findViewById<TextView>(R.id.result_text).text.toString())
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        findViewById<TextView>(R.id.first_number).setText(savedInstanceState.getString("first")?: "0")
+        findViewById<TextView>(R.id.second_number).setText(savedInstanceState.getString("second")?: "0")
+        findViewById<TextView>(R.id.result_text).setText(savedInstanceState.getString("result")?: "")
     }
 
     private inner class ButtonListener : View.OnClickListener {
